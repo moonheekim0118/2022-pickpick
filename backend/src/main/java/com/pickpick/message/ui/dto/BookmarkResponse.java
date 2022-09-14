@@ -1,6 +1,5 @@
 package com.pickpick.message.ui.dto;
 
-import com.pickpick.member.domain.Member;
 import com.pickpick.message.domain.Bookmark;
 import com.pickpick.message.domain.Message;
 import java.time.LocalDateTime;
@@ -12,6 +11,7 @@ import lombok.Getter;
 public class BookmarkResponse {
 
     private Long id;
+    private Long messageId;
     private Long memberId;
     private String username;
     private String userThumbnail;
@@ -23,6 +23,7 @@ public class BookmarkResponse {
     }
 
     public BookmarkResponse(final Long id,
+                            final Long messageId,
                             final Long memberId,
                             final String username,
                             final String userThumbnail,
@@ -30,6 +31,7 @@ public class BookmarkResponse {
                             final LocalDateTime postedDate,
                             final LocalDateTime modifiedDate) {
         this.id = id;
+        this.messageId = messageId;
         this.memberId = memberId;
         this.username = username;
         this.userThumbnail = userThumbnail;
@@ -39,14 +41,14 @@ public class BookmarkResponse {
     }
 
     public static BookmarkResponse from(final Bookmark bookmark) {
-        Member member = bookmark.getMember();
         Message message = bookmark.getMessage();
 
         return BookmarkResponse.builder()
                 .id(bookmark.getId())
-                .memberId(member.getId())
-                .username(member.getUsername())
-                .userThumbnail(member.getThumbnailUrl())
+                .messageId(message.getId())
+                .memberId(message.getMember().getId())
+                .username(message.getMember().getUsername())
+                .userThumbnail(message.getMember().getThumbnailUrl())
                 .text(message.getText())
                 .postedDate(message.getPostedDate())
                 .modifiedDate(message.getModifiedDate())
